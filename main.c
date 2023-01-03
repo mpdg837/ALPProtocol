@@ -5,22 +5,31 @@
 
 
 int main() {
+    createListNodes();
+
+    addNewNode(1);
+    addNewNode(3);
+    addNewNode(8);
+    addNewNode(15);
+    addNewNode(12);
+
     mainTree = emptyBranch("broker");
 
     addNodePath("/budynek=1");
-    addNodePath("/budynek=15");
-    addNodePath("/budynek/mieszkanie1/pokoj1=2");
-    addNodePath("/budynek/mieszkanie1/pokoj1/szafa=3");
-    addNodePath("/budynek/mieszkanie1/pokoj2=4");
-    addNodePath("/budynek/mieszkanie2=5");
-    addNodePath("/budynek/mieszkanie2/pokoj1=6");
-    addNodePath("/budynek/mieszkanie2/pokoj1=7");
-    addNodePath("/budynek/mieszkanie2/pokoj2=8");
-    addNodePath("/budynek/mieszkanie2/pokoj2/szafa=9");
+    addNodePath("/budynek=3");
+    addNodePath("/budynek/mieszkanie1/pokoj1=8");
+    addNodePath("/budynek/mieszkanie1/pokoj1/szafa=15");
+    addNodePath("/budynek/mieszkanie1/pokoj2=12");
+    addNodePath("/budynek/mieszkanie2=1");
+    addNodePath("/budynek/mieszkanie2/pokoj1=3");
+    addNodePath("/budynek/mieszkanie2/pokoj1=8");
+    addNodePath("/budynek/mieszkanie2/pokoj2=12");
+    addNodePath("/budynek/mieszkanie2/pokoj2/szafa=15");
 
 
 
     printBranch(mainTree,0);
 
+    killNodesList();
     return 0;
 }

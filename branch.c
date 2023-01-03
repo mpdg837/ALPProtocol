@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "./node.c"
+#include "./shortcuts.c"
 
 typedef struct tree{
     char* name_of_branch;
     struct tree* next_branch;
     struct tree* subbranch;
-    sensorNode* nodes;
+    shortcut* nodes;
 } tree;
 
 static tree* mainTree;
@@ -27,16 +27,16 @@ tree* emptyBranch(char* newName){
 
 
 void addNode(int number) {
-    sensorNode *analyseNode = actBranch->nodes;
+    shortcut *analyseNode = actBranch->nodes;
 
     if(analyseNode == NULL){
-        sensorNode *newNode = emptyNode(number);
+        shortcut *newNode = emptyShortcut(number);
         actBranch->nodes = newNode;
     }else{
 
         if(!nodeExists(analyseNode,number)){
-            sensorNode *newNode = emptyNode(number);
-            analyseNode->next_node = newNode;
+            shortcut *newNode = emptyShortcut(number);
+            analyseNode->next_short = newNode;
         }
     }
 

@@ -2,57 +2,97 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define TRUE 1;
-#define FALSE 0;
+#define TRUE 1
+#define FALSE 0
 
-typedef struct sensorNode{
-    int number_node;
-    struct sensorNode* next_node;
+typedef struct node
+{
+    int numberNode;
 
-} sensorNode;
+    char temperature;
+    char pressure;
+    char humitidy;
+    char lightness;
+}node;
 
-sensorNode* emptyNode(int number){
-    sensorNode* newNode = malloc(sizeof(newNode));
+typedef struct lnode
+{
+    node* myNode;
+    struct lnode* next_item;
+}lnode;
 
-    newNode -> number_node = number;
-    newNode -> next_node = NULL;
+static struct lnode* listofNodes;
+
+node* newNode(int number){
+    node* newNode = malloc(sizeof(node));
+    
+    newNode -> numberNode = number;
+    
+    newNode -> humitidy = FALSE;
+    newNode -> lightness = FALSE;
+    newNode -> numberNode = FALSE;
+    newNode -> temperature = FALSE;
 
     return newNode;
-
+}
+lnode* newNodeItem(node* myNode){
+    lnode* itemNode = malloc(sizeof(lnode));
+    itemNode -> myNode = myNode;
+    itemNode -> next_item = NULL;
 }
 
-
-void spacingX(int level){
-    int k = 0;
-    for(k=0;k<level;k++){
-        printf("   ");
-    }
+void createListNodes(){
+    listofNodes = NULL;
 }
 
-char nodeExists(sensorNode* analyseNode, int number){
-    char detected = FALSE;
-    while (1){
+void addNewNode(int number){
+    node* myNewNode = newNode(number);
+    if(listofNodes == NULL){
+        listofNodes = newNodeItem(myNewNode);
+    }else{
+        lnode* analysedNode = listofNodes;
 
-        if(analyseNode -> number_node == number){
-            detected = TRUE;
-            break;
+        while (analysedNode != NULL)
+        {
+            analysedNode = analysedNode -> next_item;
         }
-        if(analyseNode -> next_node == NULL) break;
 
-        analyseNode  = analyseNode -> next_node;
+        lnode* newItem = malloc(sizeof(lnode));
+        newItem ->myNode = myNewNode;
+        newItem ->next_item = NULL;
+
+        analysedNode = newItem;
+        
     }
-
-    return detected;
 }
 
-void printNodes(sensorNode* analyseNode, int level) {
+node* getNode(int number){
+    lnode* analysedItem = listofNodes;
 
-    sensorNode *analysing = analyseNode;
+    while (analysedItem != NULL)
+    {
+        if(analysedItem->myNode != NULL){
+            if(analysedItem -> myNode -> numberNode == number){
+                return analysedItem -> myNode;
+            }
+        }
+        analysedItem = analysedItem -> next_item;
+    }
 
-    while (analysing != NULL) {
-        spacingX(level);
-        printf("| Node ID: %d \n", analysing->number_node);
-        analysing = analysing -> next_node;
+    return NULL;        
+}
+
+
+void killNodesList(){
+    lnode* analysedItem = listofNodes;
+
+    while (analysedItem != NULL)
+    {
+        free(analysedItem -> myNode);
+        lnode* savedItem = analysedItem;
+        analysedItem = analysedItem -> next_item;
+
+        free(savedItem);
     }
 
 }
