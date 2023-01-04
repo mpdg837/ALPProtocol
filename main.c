@@ -24,13 +24,21 @@ int main() {
     showLNodeList();
     printBranch(mainTree,0);
     
-    tree* branchM = getBranch("/budynek/mieszkanie1/pokoj1");
+    printf("==== \n");
+    char* path = "/budynek/mieszkanie2/pokoj2";
+    printf("SELECT ALL FROM %s/*  :\n",path);
+    tree* branchM = getBranch(path);
 
     if(branchM != NULL){
         printf("Selected branch %s \n",branchM ->name_of_branch);
-        selectAllNodes(branchM);
+        printf("-----\n");
         printBranch(branchM,0);
+        
+        printf("-----\n");
+        selectAllNodes(branchM);
+
         showSelectedItems();
+        printf("-----\n");
     }else{
         printf("Brak \n");
     }

@@ -1,14 +1,8 @@
 #include "./node.c"
 
-static lnode* selectedItems;
+static lnode* selectedItems = NULL;
 static char firstSelection = TRUE;
 
-void initNewSelectionItems(){
-    if(!firstSelection){
-        killSelectedItems();
-    }
-    selectedItems = NULL;
-}
 
 void killSelectedItems(){
     lnode* analysedItem = selectedItems;
@@ -22,21 +16,52 @@ void killSelectedItems(){
     
 }
 
+
+void initNewSelectionItems(){
+    if(!firstSelection){
+        killSelectedItems();
+    }
+    selectedItems = NULL;
+    firstSelection = TRUE;
+}
+
 static void addSelectedItem(node* myNode){
 
     lnode* analysedItem = selectedItems;
+    char detected = FALSE;
 
     if(analysedItem == NULL){
         selectedItems = newNodeItem(myNode);
     }else{
 
         while(1){
-            if(analysedItem -> next_item == NULL) break;
+
+            if(analysedItem -> myNode != NULL){
+                if(analysedItem -> myNode == myNode){
+                    return 0;
+                }
+            }
+            if(analysedItem ->next_item == NULL) break;
             analysedItem = analysedItem -> next_item;
         };
 
-        lnode* newMyItem = newNodeItem(myNode);
-        analysedItem -> next_item = newMyItem;
+        if(!detected){
+            lnode* newMyItem = newNodeItem(myNode);
+            analysedItem -> next_item = newMyItem;
+        }
     }
+
+    
 }
 
+void showSelectedItems(){
+    lnode* listElement = selectedItems;
+
+    printf("Selected items: \n");
+    while (listElement != NULL)
+    {
+        printf("* NODE ID: %d \n",listElement -> myNode ->numberNode);
+        listElement = listElement -> next_item;
+    }
+    
+}

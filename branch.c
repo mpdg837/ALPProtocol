@@ -120,37 +120,32 @@ static void addAllNodesDirectlyLocated(tree* analysedBranch){
         
         while (analysedNode != NULL)
         {
-            if(analysedNode -> node != NULL)
+            if(analysedNode -> node != NULL){
                 addSelectedItem(analysedNode -> node );
-
+               
+            }
             analysedNode = analysedNode -> next_short;
         }
     }
 }
 
-void selectAllNodes(tree* branch){
-    initNewSelectionItems();
+static void selectAllNodesR(tree* branch){
+  
 
     tree* analysedBranch = branch;
 
-    addAllNodesDirectlyLocated(analysedBranch);
+    
     while (analysedBranch != NULL)
     {
-        selectAllNodes(analysedBranch -> subbranch);
+        addAllNodesDirectlyLocated(analysedBranch);
+        if(analysedBranch -> subbranch != NULL) selectAllNodesR(analysedBranch -> subbranch);
         analysedBranch = analysedBranch -> next_branch;
     }
        
         
 }
 
-void showSelectedItems(){
-    lnode* listElement = selectedItems;
-
-    printf("Selected items: \n");
-    while (listElement != NULL)
-    {
-        printf("* NODE ID: %d \n",listElement -> myNode ->numberNode);
-        listElement = listElement -> next_item;
-    }
-    
+void selectAllNodes(tree* branch){
+    initNewSelectionItems();
+    selectAllNodesR(branch);
 }
