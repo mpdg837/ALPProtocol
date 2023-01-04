@@ -4,15 +4,22 @@
 
 #define isNumber(character) character >= '0' && character <= '9'
 
-#define TRUE 1;
-#define FALSE 0;
-
 #define SEPARATOR (char)'/'
 #define CR 13
 #define LF 10
 
+void detectNewNode(char* myConfig){
+    char pathBuffer[DIRECOTRY_BUFFER_SIZE];
 
+    memset(pathBuffer,'\0',sizeof (char));
 
+    int n=0;
+    for(n=0;n<DIRECOTRY_BUFFER_SIZE;n++){
+        switch (myConfig[n]) {
+
+        }
+    }
+}
 
 void addNodePath(char* myConfig){
 
@@ -30,6 +37,9 @@ void addNodePath(char* myConfig){
     int nodeIndex = 0;
 
     int n=0;
+
+   
+
     for(n=0;n<DIRECOTRY_BUFFER_SIZE;n++){
         switch (myConfig[n]) {
             case SEPARATOR:

@@ -13,6 +13,8 @@ typedef struct node
     char pressure;
     char humitidy;
     char lightness;
+
+    char connected;
 }node;
 
 typedef struct lnode
@@ -30,40 +32,55 @@ node* newNode(int number){
     
     newNode -> humitidy = FALSE;
     newNode -> lightness = FALSE;
-    newNode -> numberNode = FALSE;
     newNode -> temperature = FALSE;
+    
+    newNode -> connected = FALSE;
 
     return newNode;
 }
 lnode* newNodeItem(node* myNode){
     lnode* itemNode = malloc(sizeof(lnode));
+
     itemNode -> myNode = myNode;
     itemNode -> next_item = NULL;
+
+    return itemNode;
 }
 
 void createListNodes(){
     listofNodes = NULL;
 }
 
-void addNewNode(int number){
+int addNewNode(int number){
     node* myNewNode = newNode(number);
+
     if(listofNodes == NULL){
         listofNodes = newNodeItem(myNewNode);
     }else{
         lnode* analysedNode = listofNodes;
+        char detected = FALSE;
 
-        while (analysedNode != NULL)
+        while (1)
         {
+            if(analysedNode -> myNode != NULL){
+                if(analysedNode -> myNode ->numberNode == number){
+                    detected = TRUE;
+                    break;
+                }
+            }     
+            if(analysedNode -> next_item == NULL)break;
+       
             analysedNode = analysedNode -> next_item;
         }
 
-        lnode* newItem = malloc(sizeof(lnode));
-        newItem ->myNode = myNewNode;
-        newItem ->next_item = NULL;
-
-        analysedNode = newItem;
+        if(detected) {
+            free(myNewNode);
+            return 0;
+        }
+        else analysedNode -> next_item = newNodeItem(myNewNode);
         
     }
+    return 1;
 }
 
 node* getNode(int number){
@@ -82,7 +99,18 @@ node* getNode(int number){
     return NULL;        
 }
 
+void showLNodeList(){
+    lnode* analysedSensorNode = listofNodes;
 
+    while (analysedSensorNode != NULL)
+    {
+        if(analysedSensorNode -> myNode != NULL)
+            printf("SENSOR NODE: %d \n",analysedSensorNode ->myNode->numberNode);
+        
+        analysedSensorNode = analysedSensorNode -> next_item;
+    }
+    
+}
 void killNodesList(){
     lnode* analysedItem = listofNodes;
 

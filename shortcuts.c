@@ -3,9 +3,6 @@
 #include <string.h>
 #include "./node.c"
 
-#define TRUE 1
-#define FALSE 0
-
 typedef struct shortcut{
     node* node;
     struct shortcut* next_short;
@@ -54,7 +51,6 @@ void printNodes(shortcut* analyseNode, int level) {
 
     while (analysing != NULL) {
         spacingX(level);
-        printf("|NODE \n");
         if(analysing -> node != NULL){
             printf("| Node ID: %d \n", analysing-> node -> numberNode);
         }

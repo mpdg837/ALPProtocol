@@ -13,6 +13,8 @@ int main() {
     addNewNode(15);
     addNewNode(12);
 
+    showLNodeList();
+    
     mainTree = emptyBranch("broker");
 
     addNodePath("/budynek=1");
