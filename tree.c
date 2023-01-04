@@ -34,9 +34,29 @@ tree* findBranch(tree* analysedTree,char* topic){
     }
     return NULL;
 }
+
+shortcut* findNodes(tree* analysedTree,char* topic){
+    tree* analysedBranch = analysedTree;
+
+    while (analysedBranch != NULL)
+    {
+
+        if(analysedBranch -> nodes != NULL)
+            if(strcmp(analysedBranch -> name_of_branch,topic) == 0){
+                return analysedBranch -> nodes;
+                break;
+            }
+
+    
+        analysedBranch = analysedBranch -> next_branch;
+    }
+    return NULL;
+}
+
 tree* getBranch(char* myConfig){
     tree* analyseTree = mainTree -> subbranch;
-    
+    shortcut* analyseNode = NULL;
+
     char pathBuffer[DIRECOTRY_BUFFER_SIZE];
 
     memset(pathBuffer,'\0',sizeof (char));
@@ -55,19 +75,18 @@ tree* getBranch(char* myConfig){
                 case '/':
                     
                     pathBuffer[k] = '\0';
-                    
                      char *destination = malloc(sizeof(char) * strlen(pathBuffer));
                      strcpy(destination, pathBuffer);
 
+                     analyseNode = findNodes(analyseTree,destination);
                      analyseTree = findBranch(analyseTree,destination);
-                     
-                     if(analyseTree == NULL) {
-                        return NULL;
-                     }
+
+                 
                      if(myConfig[n] != '/') finAnalyse = TRUE;
-                    memset(pathBuffer,'\0',sizeof (char));
-                    k=0;
-                   
+                     else {
+                        memset(pathBuffer,'\0',sizeof (char));
+                        k=0;
+                     }
                     break;
                 default:
                     pathBuffer[k] = myConfig[n];
@@ -79,7 +98,14 @@ tree* getBranch(char* myConfig){
         }
     }
     
-    return analyseTree;
+    char *destination = malloc(sizeof(char) * strlen(pathBuffer));
+    strcpy(destination, pathBuffer);
+
+    tree* selectedBranch = emptyBranch(destination);
+    selectedBranch -> subbranch = analyseTree;
+    selectedBranch -> nodes = analyseNode;
+
+    return selectedBranch;
 }
 
 void addNodePath(char* myConfig){

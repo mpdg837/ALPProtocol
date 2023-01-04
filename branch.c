@@ -14,7 +14,7 @@ typedef struct tree{
 static tree* mainTree;
 static tree* actBranch;
 
-tree* emptyBranch(char* newName){
+static tree* emptyBranch(char* newName){
     tree* newBranch = malloc(sizeof(tree));
 
     newBranch -> name_of_branch = newName;
@@ -43,7 +43,7 @@ void addNode(int number) {
 
 }
 
-char branchExists(tree* analyseBranch,char* newName){
+static char branchExists(tree* analyseBranch,char* newName){
 
     char detected = FALSE;
 
@@ -61,7 +61,7 @@ char branchExists(tree* analyseBranch,char* newName){
 
     return detected;
 }
-void goNextBranch(char* newName){
+static void goNextBranch(char* newName){
     // Add new branch
 
     if(actBranch -> subbranch == NULL){
@@ -82,14 +82,14 @@ void goNextBranch(char* newName){
 
 }
 
-void spacing(int level){
+static void spacing(int level){
     int k=0;
     for(k=0;k<level;k++){
         printf("   ");
     }
 }
 
-void printBranch(tree* branch,int level){
+static void printBranch(tree* branch,int level){
 
     tree* analyseTree = branch;
 
@@ -114,7 +114,43 @@ void printBranch(tree* branch,int level){
 
 }
 
+static void addAllNodesDirectlyLocated(tree* analysedBranch){
+    if(analysedBranch !=NULL){
+        shortcut* analysedNode = analysedBranch -> nodes;    
+        
+        while (analysedNode != NULL)
+        {
+            if(analysedNode -> node != NULL)
+                addSelectedItem(analysedNode -> node );
+
+            analysedNode = analysedNode -> next_short;
+        }
+    }
+}
 
 void selectAllNodes(tree* branch){
+    initNewSelectionItems();
+
+    tree* analysedBranch = branch;
+
+    addAllNodesDirectlyLocated(analysedBranch);
+    while (analysedBranch != NULL)
+    {
+        selectAllNodes(analysedBranch -> subbranch);
+        analysedBranch = analysedBranch -> next_branch;
+    }
+       
+        
+}
+
+void showSelectedItems(){
+    lnode* listElement = selectedItems;
+
+    printf("Selected items: \n");
+    while (listElement != NULL)
+    {
+        printf("* NODE ID: %d \n",listElement -> myNode ->numberNode);
+        listElement = listElement -> next_item;
+    }
     
 }

@@ -24,10 +24,20 @@ int main() {
     showLNodeList();
     printBranch(mainTree,0);
     
-    tree* branchM = getBranch("/budynek/mieszkanie2");
-    if(branchM != NULL)
+    tree* branchM = getBranch("/budynek/mieszkanie1/pokoj1");
+
+    if(branchM != NULL){
+        printf("Selected branch %s \n",branchM ->name_of_branch);
+        selectAllNodes(branchM);
         printBranch(branchM,0);
+        showSelectedItems();
+    }else{
+        printf("Brak \n");
+    }
+
+    free(branchM);
+        
     killNodesList();
-    
+    killSelectedItems();
     return 0;
 }

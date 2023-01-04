@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "./node.c"
+#include "./nodeSelector.c"
 
 typedef struct shortcut{
     node* node;
@@ -9,7 +9,7 @@ typedef struct shortcut{
 
 } shortcut;
 
-shortcut* emptyShortcut(int number){
+static shortcut* emptyShortcut(int number){
     shortcut* newShort = malloc(sizeof(newNode));
 
     newShort -> node = getNode(number);
@@ -20,14 +20,14 @@ shortcut* emptyShortcut(int number){
 }
 
 
-void spacingX(int level){
+static void spacingX(int level){
     int k = 0;
     for(k=0;k<level;k++){
         printf("   ");
     }
 }
 
-char nodeExists(shortcut* analyseNode, int number){
+static char nodeExists(shortcut* analyseNode, int number){
     char detected = FALSE;
     while (1){
 

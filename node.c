@@ -25,7 +25,7 @@ typedef struct lnode
 
 static struct lnode* listofNodes;
 
-node* newNode(int number){
+static node* newNode(int number){
     node* newNode = malloc(sizeof(node));
     
     newNode -> numberNode = number;
@@ -38,7 +38,7 @@ node* newNode(int number){
 
     return newNode;
 }
-lnode* newNodeItem(node* myNode){
+static lnode* newNodeItem(node* myNode){
     lnode* itemNode = malloc(sizeof(lnode));
 
     itemNode -> myNode = myNode;
@@ -51,7 +51,7 @@ void createListNodes(){
     listofNodes = NULL;
 }
 
-int addNewNode(int number){
+static int addNewNode(int number){
     node* myNewNode = newNode(number);
 
     if(listofNodes == NULL){
