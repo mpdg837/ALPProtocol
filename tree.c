@@ -8,10 +8,17 @@
 #define CR 13
 #define LF 10
 
-int getNumber(char* myConfig){
-    char pathBuffer[DIRECOTRY_BUFFER_SIZE];
+static char *destination;
 
-    memset(pathBuffer,'\0',sizeof (char));
+void initAnalyse(){
+    destination = malloc(sizeof(char) * DIRECOTRY_BUFFER_SIZE);
+}
+
+void finishAnalyse(){
+    free(destination);
+}
+
+int getNumber(char* myConfig){
 
     char finAnalyse = FALSE;
     char canRead = FALSE;
@@ -52,6 +59,69 @@ int detectNewNode(char* myConfig){
     return number;
 }
 
+tree* findBranch(tree* analysedTree,char* topic){
+    tree* analysedBranch = analysedTree;
+
+    while (analysedBranch != NULL)
+    {
+        if(analysedBranch -> subbranch != NULL)
+            if(strcmp(analysedBranch -> subbranch -> name_of_branch,analysedTree) == 0){
+                return analysedBranch -> subbranch;
+                break;
+            }
+
+    
+        analysedBranch = analysedBranch -> next_branch;
+    }
+    return NULL;
+}
+tree* getBranch(char* myConfig){
+    tree* analyseTree = mainTree -> subbranch;
+    
+    char pathBuffer[DIRECOTRY_BUFFER_SIZE];
+
+    memset(pathBuffer,'\0',sizeof (char));
+
+    char finAnalyse = FALSE;
+    int bufferNumber = 0;
+
+    int k=0;
+    int n=0;
+    if(strlen(myConfig) > 1){
+        for(n=1;n<DIRECOTRY_BUFFER_SIZE;n++){
+            switch (myConfig[n]) {
+                case CR:
+                case LF:
+                case '\0':
+                case '/':
+                    
+                    pathBuffer[k] = '\0';
+                    printf("'%s'-> \n",pathBuffer);
+
+                     k=0;
+                     memset(pathBuffer,'\0',sizeof (char));
+                    
+                    char *destination = malloc(sizeof(char) * strlen(pathBuffer));
+                    strcpy(destination, pathBuffer);
+
+                     analyseTree = findBranch(analyseTree,destination);
+                     
+                     if(myConfig[n] != '/') finAnalyse = TRUE;
+                    
+                    break;
+                default:
+                    pathBuffer[k] = myConfig[n];
+                    k++;
+                    break;
+            }
+
+            if(finAnalyse) break;
+        }
+    }
+    
+    return analyseTree;
+}
+
 void addNodePath(char* myConfig){
 
     char pathBuffer[DIRECOTRY_BUFFER_SIZE];
@@ -70,6 +140,7 @@ void addNodePath(char* myConfig){
     int n=0;
 
     int numberNode = detectNewNode(myConfig);
+    
 
     for(n=0;n<DIRECOTRY_BUFFER_SIZE;n++){
         switch (myConfig[n]) {
@@ -82,13 +153,13 @@ void addNodePath(char* myConfig){
                     init = TRUE;
                 }else if(init){
                     
-                    char *destination = malloc(sizeof(char) * strlen(pathBuffer));
+                    
                     strcpy(destination, pathBuffer);
 
                     goNextBranch(destination);
                     memset(pathBuffer, '\0', sizeof(char) * DIRECOTRY_BUFFER_SIZE);
                     k = 0;
-
+                    
                     if (myConfig[n] == '=') {
                         addNode(numberNode);
                         finloop = TRUE;
@@ -106,5 +177,5 @@ void addNodePath(char* myConfig){
 
         if(finloop) break;
     }
-
+    
 }

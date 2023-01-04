@@ -93,7 +93,7 @@ void printBranch(tree* branch,int level){
 
     tree* analyseTree = branch;
 
-    while(1){
+    while(analyseTree != NULL){
         spacing(level);
         printf("+");
         printf(" %s \n",analyseTree -> name_of_branch);
