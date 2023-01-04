@@ -8,17 +8,48 @@
 #define CR 13
 #define LF 10
 
-void detectNewNode(char* myConfig){
+int getNumber(char* myConfig){
     char pathBuffer[DIRECOTRY_BUFFER_SIZE];
 
     memset(pathBuffer,'\0',sizeof (char));
 
+    char finAnalyse = FALSE;
+    char canRead = FALSE;
+
+    int bufferNumber = 0;
+
     int n=0;
     for(n=0;n<DIRECOTRY_BUFFER_SIZE;n++){
         switch (myConfig[n]) {
-
+            case CR:
+            case LF:
+            case '\0':
+                finAnalyse = TRUE;
+                break;
+            case '=':
+                canRead = TRUE;
+                break;
+            default:
+                if(canRead){
+                    if(isNumber(myConfig[n])){
+                        bufferNumber *= 10;
+                        bufferNumber += (unsigned char)myConfig[n] - (unsigned char)'0';
+                    }
+                }
+                break;
         }
+
+        if(finAnalyse) break;
     }
+
+    return bufferNumber;
+}
+int detectNewNode(char* myConfig){
+    int number = getNumber(myConfig);
+    if(!addNewNode(number)) {
+        printf("NEW NODE: %d \n",number);
+    }
+    return number;
 }
 
 void addNodePath(char* myConfig){
@@ -38,7 +69,7 @@ void addNodePath(char* myConfig){
 
     int n=0;
 
-   
+    int numberNode = detectNewNode(myConfig);
 
     for(n=0;n<DIRECOTRY_BUFFER_SIZE;n++){
         switch (myConfig[n]) {
@@ -50,37 +81,24 @@ void addNodePath(char* myConfig){
                 if(myConfig[n] == SEPARATOR && !init && n==0){
                     init = TRUE;
                 }else if(init){
-                    if (!readNumber) {
-                        char *destination = malloc(sizeof(char) * strlen(pathBuffer));
-                        strcpy(destination, pathBuffer);
+                    
+                    char *destination = malloc(sizeof(char) * strlen(pathBuffer));
+                    strcpy(destination, pathBuffer);
 
-                        goNextBranch(destination);
-                        memset(pathBuffer, '\0', sizeof(char) * DIRECOTRY_BUFFER_SIZE);
-                        k = 0;
-                    } else {
-                        addNode(nodeIndex);
-                        finloop = TRUE;
-                    }
+                    goNextBranch(destination);
+                    memset(pathBuffer, '\0', sizeof(char) * DIRECOTRY_BUFFER_SIZE);
+                    k = 0;
 
                     if (myConfig[n] == '=') {
-                        readNumber = TRUE;
+                        addNode(numberNode);
+                        finloop = TRUE;
                     }
-                    else if (myConfig[n] != SEPARATOR) break;
                 }
                 break;
             default:
 
                 if(init) {
-                    if (!readNumber) pathBuffer[k] = myConfig[n];
-                    else if (isNumber(myConfig[n])) {
-
-                        int number = (int)(unsigned char)myConfig[n];
-                        const int zero = (int)(unsigned char)'0';
-
-                        nodeIndex *=(int)10;
-                        nodeIndex += number - zero;
-                    }
-
+                    pathBuffer[k] = myConfig[n];
                     k++;
                 }
                 break;

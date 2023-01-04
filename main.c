@@ -7,14 +7,6 @@
 int main() {
     createListNodes();
 
-    addNewNode(1);
-    addNewNode(3);
-    addNewNode(8);
-    addNewNode(15);
-    addNewNode(12);
-
-    showLNodeList();
-    
     mainTree = emptyBranch("broker");
 
     addNodePath("/budynek=1");
@@ -28,8 +20,9 @@ int main() {
     addNodePath("/budynek/mieszkanie2/pokoj2=12");
     addNodePath("/budynek/mieszkanie2/pokoj2/szafa=15");
 
-
-
+    printf("Main Raport: \n \n");
+    showLNodeList();
+    
     printBranch(mainTree,0);
 
     killNodesList();
