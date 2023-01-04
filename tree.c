@@ -1,4 +1,5 @@
 #include "./branch.c"
+#include "./extractNumber.c"
 
 #define DIRECOTRY_BUFFER_SIZE 128
 
@@ -8,49 +9,6 @@
 #define CR 13
 #define LF 10
 
-static char *destination;
-
-void initAnalyse(){
-    destination = malloc(sizeof(char) * DIRECOTRY_BUFFER_SIZE);
-}
-
-void finishAnalyse(){
-    free(destination);
-}
-
-int getNumber(char* myConfig){
-
-    char finAnalyse = FALSE;
-    char canRead = FALSE;
-
-    int bufferNumber = 0;
-
-    int n=0;
-    for(n=0;n<DIRECOTRY_BUFFER_SIZE;n++){
-        switch (myConfig[n]) {
-            case CR:
-            case LF:
-            case '\0':
-                finAnalyse = TRUE;
-                break;
-            case '=':
-                canRead = TRUE;
-                break;
-            default:
-                if(canRead){
-                    if(isNumber(myConfig[n])){
-                        bufferNumber *= 10;
-                        bufferNumber += (unsigned char)myConfig[n] - (unsigned char)'0';
-                    }
-                }
-                break;
-        }
-
-        if(finAnalyse) break;
-    }
-
-    return bufferNumber;
-}
 int detectNewNode(char* myConfig){
     int number = getNumber(myConfig);
     if(!addNewNode(number)) {
@@ -64,8 +22,9 @@ tree* findBranch(tree* analysedTree,char* topic){
 
     while (analysedBranch != NULL)
     {
+
         if(analysedBranch -> subbranch != NULL)
-            if(strcmp(analysedBranch -> subbranch -> name_of_branch,analysedTree) == 0){
+            if(strcmp(analysedBranch -> name_of_branch,topic) == 0){
                 return analysedBranch -> subbranch;
                 break;
             }
@@ -96,18 +55,19 @@ tree* getBranch(char* myConfig){
                 case '/':
                     
                     pathBuffer[k] = '\0';
-                    printf("'%s'-> \n",pathBuffer);
-
-                     k=0;
-                     memset(pathBuffer,'\0',sizeof (char));
                     
-                    char *destination = malloc(sizeof(char) * strlen(pathBuffer));
-                    strcpy(destination, pathBuffer);
+                     char *destination = malloc(sizeof(char) * strlen(pathBuffer));
+                     strcpy(destination, pathBuffer);
 
                      analyseTree = findBranch(analyseTree,destination);
                      
+                     if(analyseTree == NULL) {
+                        return NULL;
+                     }
                      if(myConfig[n] != '/') finAnalyse = TRUE;
-                    
+                    memset(pathBuffer,'\0',sizeof (char));
+                    k=0;
+                   
                     break;
                 default:
                     pathBuffer[k] = myConfig[n];
@@ -153,7 +113,7 @@ void addNodePath(char* myConfig){
                     init = TRUE;
                 }else if(init){
                     
-                    
+                     char* destination = malloc(sizeof(char) * DIRECOTRY_BUFFER_SIZE);                    
                     strcpy(destination, pathBuffer);
 
                     goNextBranch(destination);

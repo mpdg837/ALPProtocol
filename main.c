@@ -5,7 +5,6 @@
 
 
 int main() {
-    initAnalyse();
     createListNodes();
 
     mainTree = emptyBranch("broker");
@@ -25,10 +24,10 @@ int main() {
     showLNodeList();
     printBranch(mainTree,0);
     
-    tree* branchM = getBranch("/budynek/mieszkanie2/pokoj2");
+    tree* branchM = getBranch("/budynek/mieszkanie2");
     if(branchM != NULL)
-        printf("%s /n",branchM -> name_of_branch);
+        printBranch(branchM,0);
     killNodesList();
-    finishAnalyse();
+    
     return 0;
 }

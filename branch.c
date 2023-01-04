@@ -113,3 +113,8 @@ void printBranch(tree* branch,int level){
     }
 
 }
+
+
+void selectAllNodes(tree* branch){
+    
+}
