@@ -27,6 +27,7 @@ int main() {
     printf("==== \n");
     char* path = "/budynek/mieszkanie2/pokoj2";
     printf("SELECT ALL FROM %s/*  :\n",path);
+    
     tree* branchM = getBranch(path);
 
     if(branchM != NULL){
@@ -39,6 +40,8 @@ int main() {
 
         showSelectedItems();
         printf("-----\n");
+
+        
     }else{
         printf("Brak \n");
     }

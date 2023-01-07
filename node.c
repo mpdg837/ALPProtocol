@@ -38,6 +38,7 @@ static node* newNode(int number){
 
     return newNode;
 }
+
 static lnode* newNodeItem(node* myNode){
     lnode* itemNode = malloc(sizeof(lnode));
 
