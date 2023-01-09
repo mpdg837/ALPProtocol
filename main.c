@@ -6,8 +6,16 @@
 
 int main() {
     createListNodes();
+    
+    addWord("broker",0);
+    addWord("budynek",1);
+    addWord("mieszkanie1",2);
+    addWord("mieszkanie2",3);
+    addWord("pokoj1",4);
+    addWord("pokoj2",5);
+    addWord("szafa",6);
 
-    mainTree = emptyBranch("broker");
+    mainTree = emptyBranch(encode("broker"));
 
     addNodePath("/budynek=1");
     addNodePath("/budynek=3");
@@ -31,7 +39,7 @@ int main() {
     tree* branchM = getBranch(path);
 
     if(branchM != NULL){
-        printf("Selected branch %s \n",branchM ->name_of_branch);
+        printf("Selected branch %d \n",branchM ->id);
         printf("-----\n");
         printBranch(branchM,0);
         
@@ -50,5 +58,6 @@ int main() {
         
     killNodesList();
     killSelectedItems();
+    killDict();
     return 0;
 }

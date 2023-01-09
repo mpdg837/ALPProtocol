@@ -3,9 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include "./shortcuts.c"
+#include "./dictionary.c"
 
 typedef struct tree{
-    char* name_of_branch;
+    short id;
     struct tree* next_branch;
     struct tree* subbranch;
     shortcut* nodes;
@@ -14,10 +15,10 @@ typedef struct tree{
 static tree* mainTree;
 static tree* actBranch;
 
-static tree* emptyBranch(char* newName){
+static tree* emptyBranch(short id){
     tree* newBranch = malloc(sizeof(tree));
 
-    newBranch -> name_of_branch = newName;
+    newBranch -> id = id;
     newBranch -> next_branch = NULL;
     newBranch -> nodes = NULL;
     newBranch ->  subbranch = NULL;
@@ -43,12 +44,12 @@ void addNode(int number) {
 
 }
 
-static char branchExists(tree* analyseBranch,char* newName){
+static char branchExists(tree* analyseBranch,short id){
 
     char detected = FALSE;
-
+    
     while(1){
-        if(strcmp(analyseBranch -> name_of_branch,newName) == 0){
+        if(analyseBranch -> id == id){
             actBranch = analyseBranch;
             detected = TRUE;
             break;
@@ -64,16 +65,18 @@ static char branchExists(tree* analyseBranch,char* newName){
 static void goNextBranch(char* newName){
     // Add new branch
 
+    short nId = encode(newName);
+
     if(actBranch -> subbranch == NULL){
-        tree* newBranch = emptyBranch(newName);
+        tree* newBranch = emptyBranch(nId);
         actBranch -> subbranch = newBranch;
         actBranch = newBranch;
     }else{
         tree* analyseBranch = actBranch -> subbranch;
 
-        if(!branchExists(analyseBranch,newName)){
+        if(!branchExists(analyseBranch,nId)){
 
-            tree* newBranch = emptyBranch(newName);
+            tree* newBranch = emptyBranch(nId);
             analyseBranch -> next_branch = newBranch;
 
             actBranch = newBranch;
@@ -96,7 +99,7 @@ static void printBranch(tree* branch,int level){
     while(analyseTree != NULL){
         spacing(level);
         printf("+");
-        printf(" %s \n",analyseTree -> name_of_branch);
+        printf(" %d \n",analyseTree -> id);
 
 
         printNodes(analyseTree -> nodes,level+1);

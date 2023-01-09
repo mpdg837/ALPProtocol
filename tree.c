@@ -19,12 +19,13 @@ int detectNewNode(char* myConfig){
 
 tree* findBranch(tree* analysedTree,char* topic){
     tree* analysedBranch = analysedTree;
+    short idTopic = encode(topic);
 
     while (analysedBranch != NULL)
     {
 
         if(analysedBranch -> subbranch != NULL)
-            if(strcmp(analysedBranch -> name_of_branch,topic) == 0){
+            if(analysedBranch -> id == idTopic){
                 return analysedBranch -> subbranch;
                 break;
             }
@@ -37,12 +38,13 @@ tree* findBranch(tree* analysedTree,char* topic){
 
 shortcut* findNodes(tree* analysedTree,char* topic){
     tree* analysedBranch = analysedTree;
+    short idTopic = encode(topic);
 
     while (analysedBranch != NULL)
     {
 
         if(analysedBranch -> nodes != NULL)
-            if(strcmp(analysedBranch -> name_of_branch,topic) == 0){
+            if(analysedBranch -> id == idTopic){
                 return analysedBranch -> nodes;
                 break;
             }
@@ -100,8 +102,10 @@ tree* getBranch(char* myConfig){
     
     char *destination = malloc(sizeof(char) * strlen(pathBuffer));
     strcpy(destination, pathBuffer);
+    
+    short nId = encode(destination);
 
-    tree* selectedBranch = emptyBranch(destination);
+    tree* selectedBranch = emptyBranch(nId);
     selectedBranch -> subbranch = analyseTree;
     selectedBranch -> nodes = analyseNode;
 
