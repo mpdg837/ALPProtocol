@@ -28,26 +28,34 @@ int main() {
     addNodePath("/budynek/mieszkanie2/pokoj2=12");
     addNodePath("/budynek/mieszkanie2/pokoj2/szafa=15");
 
-    printf("\n \n Main Raport: \n \n");
+    printf("================================================ \n");
+    printf(" Registered Nodes: \n");
+    printf("------------------------------------------------ \n");
     showLNodeList();
+    printf("================================================ \n");
+    printf(" Main Tree: \n");
+    printf("------------------------------------------------ \n");
+    
     printBranch(mainTree,0);
     
-    printf("==== \n");
-    char* path = "/budynek/mieszkanie2/pokoj2";
+    printf("================================================ \n");
+    char* path = "/budynek/mieszkanie2/pokoj1";
     printf("SELECT ALL FROM %s/*  :\n",path);
-    
-    tree* branchM = getBranch(path);
+
+    char* encPath = encodePath(path);
+    tree* branchM = getBranch(encPath);
 
     if(branchM != NULL){
-        printf("Selected branch %d \n",branchM ->id);
-        printf("-----\n");
-        printBranch(branchM,0);
-        
-        printf("-----\n");
+        printf("------------------------------------------------\n");
         selectAllNodes(branchM);
 
-        showSelectedItems();
-        printf("-----\n");
+        lnode* selected = copySelectedItems();
+        killSelectedItems();
+
+        showSelectedItems(selected);
+        killCopiedList(selected);
+
+        printf("================================================ \n");
 
         
     }else{
@@ -55,8 +63,6 @@ int main() {
     }
 
     free(branchM);
-
-    encodePath("/budynek/mieszkanie2/pokoj2");
 
     killNodesList();
     killSelectedItems();

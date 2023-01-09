@@ -94,10 +94,12 @@ char* getValue(short id){
 
 char* encodePath(char* myConfig){
     char* shortPath=malloc(sizeof(char) * DIRECOTRY_BUFFER_SIZE);
-    
+    memset(shortPath,'\0',sizeof(char) * DIRECOTRY_BUFFER_SIZE);
+
     char pathBuffer[DIRECOTRY_BUFFER_SIZE];
     memset(pathBuffer,'\0',sizeof(char) * DIRECOTRY_BUFFER_SIZE);
 
+    int nPath = 0;
     int n=0;
     int k=0;
     char initized = FALSE;
@@ -114,8 +116,11 @@ char* encodePath(char* myConfig){
                     pathBuffer[k] = '\0';
 
                     short id = encode(pathBuffer);
-                    printf("KOLEJNA: %d \n",id);
+                    
+                    shortPath[nPath] = (id >> 8) & 0xFF;
+                    shortPath[nPath + 1] = ((id & 0xFF) << 1);
 
+                    nPath += 2;
                     memset(pathBuffer,'\0',sizeof(char) * DIRECOTRY_BUFFER_SIZE);
                     k=0;
                 }
@@ -130,8 +135,8 @@ char* encodePath(char* myConfig){
     pathBuffer[k] = '\0';
 
     short id = encode(pathBuffer);
-    printf("KOLEJNA: %d \n",id);
-
-
+    shortPath[nPath] = (id >> 8) & 0xFF;
+    shortPath[nPath+1] = ((id & 0xFF) << 1) | 0x1;
+    
     return shortPath;
 }

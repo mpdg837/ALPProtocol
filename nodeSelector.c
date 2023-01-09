@@ -54,8 +54,51 @@ static void addSelectedItem(node* myNode){
     
 }
 
-void showSelectedItems(){
-    lnode* listElement = selectedItems;
+lnode* copySelectedItems(){
+    lnode* copySelected = NULL;
+    lnode* lastElement = NULL;
+
+    if(selectedItems != NULL){
+        lnode* analysedItem = selectedItems;
+
+        while(1){
+            
+            lnode* newItem = newNodeItem(analysedItem -> myNode);
+            
+            if(copySelected == NULL){
+                copySelected = newItem;
+                lastElement = copySelected;
+            }else{
+                lastElement -> next_item = newItem;
+                lastElement = newItem;
+            }
+
+            if(analysedItem -> next_item == NULL) break;
+            analysedItem = analysedItem -> next_item;
+        }
+    }
+
+    return copySelected;
+}
+
+void killCopiedList(lnode* list){
+    lnode* analysedItem = list;
+
+    while (1)
+    {
+        lnode* savedItem = analysedItem;
+
+        if(analysedItem -> next_item == NULL) break;
+        analysedItem = analysedItem -> next_item;
+
+        free(savedItem);
+    }
+    
+}
+
+
+void showSelectedItems(lnode* list){
+    lnode* listElement = list;
 
     printf("Selected items: \n");
     

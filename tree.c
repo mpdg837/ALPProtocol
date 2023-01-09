@@ -17,9 +17,9 @@ int detectNewNode(char* myConfig){
     return number;
 }
 
-tree* findBranch(tree* analysedTree,char* topic){
+tree* findBranch(tree* analysedTree,short idTopic){
     tree* analysedBranch = analysedTree;
-    short idTopic = encode(topic);
+    
 
     while (analysedBranch != NULL)
     {
@@ -36,9 +36,8 @@ tree* findBranch(tree* analysedTree,char* topic){
     return NULL;
 }
 
-shortcut* findNodes(tree* analysedTree,char* topic){
+shortcut* findNodes(tree* analysedTree,short idTopic){
     tree* analysedBranch = analysedTree;
-    short idTopic = encode(topic);
 
     while (analysedBranch != NULL)
     {
@@ -55,62 +54,38 @@ shortcut* findNodes(tree* analysedTree,char* topic){
     return NULL;
 }
 
-tree* getBranch(char* myConfig){
+tree* getBranch(char* shortConfig){
+    
     tree* analyseTree = mainTree -> subbranch;
     shortcut* analyseNode = NULL;
 
     char pathBuffer[DIRECOTRY_BUFFER_SIZE];
-
     memset(pathBuffer,'\0',sizeof (char));
-
+    
+    short idTopic;
     char finAnalyse = FALSE;
-    int bufferNumber = 0;
 
-    int k=0;
-    int n=0;
-    if(strlen(myConfig) > 1){
-        for(n=1;n<DIRECOTRY_BUFFER_SIZE;n++){
-            switch (myConfig[n]) {
-                case CR:
-                case LF:
-                case '\0':
-                case '/':
-                    
-                    pathBuffer[k] = '\0';
-                     char *destination = malloc(sizeof(char) * strlen(pathBuffer));
-                     strcpy(destination, pathBuffer);
+        int n=0;
+        for(n=0;n<DIRECOTRY_BUFFER_SIZE;n+=2){
+            
+            idTopic = (shortConfig[n] << 8) | ((shortConfig[n+1] & 0xFE) >> 1);
 
-                     analyseNode = findNodes(analyseTree,destination);
-                     analyseTree = findBranch(analyseTree,destination);
+            analyseNode = findNodes(analyseTree,idTopic);
+            analyseTree = findBranch(analyseTree,idTopic);
 
-                 
-                     if(myConfig[n] != '/') finAnalyse = TRUE;
-                     else {
-                        memset(pathBuffer,'\0',sizeof (char));
-                        k=0;
-                     }
-                    break;
-                default:
-                    pathBuffer[k] = myConfig[n];
-                    k++;
-                    break;
+            if(shortConfig[n+1] & 0x1 == 0x1){
+                break;
             }
-
-            if(finAnalyse) break;
         }
-    }
-    
-    char *destination = malloc(sizeof(char) * strlen(pathBuffer));
-    strcpy(destination, pathBuffer);
-    
-    short nId = encode(destination);
 
-    tree* selectedBranch = emptyBranch(nId);
+    tree* selectedBranch = emptyBranch(idTopic);
     selectedBranch -> subbranch = analyseTree;
     selectedBranch -> nodes = analyseNode;
 
     return selectedBranch;
+
 }
+
 
 void addNodePath(char* myConfig){
 
