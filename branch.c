@@ -99,8 +99,12 @@ static void printBranch(tree* branch,int level){
     while(analyseTree != NULL){
         spacing(level);
         printf("+");
-        printf(" %d \n",analyseTree -> id);
+        printf(" (%d) ",analyseTree -> id);
+        
+        char* results = getValue(analyseTree -> id);    
+        printf(" - '%s'",results);
 
+        printf("\n");
 
         printNodes(analyseTree -> nodes,level+1);
 

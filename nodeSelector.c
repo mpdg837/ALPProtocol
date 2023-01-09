@@ -58,6 +58,7 @@ void showSelectedItems(){
     lnode* listElement = selectedItems;
 
     printf("Selected items: \n");
+    
     while (listElement != NULL)
     {
         printf("* NODE ID: %d \n",listElement -> myNode ->numberNode);

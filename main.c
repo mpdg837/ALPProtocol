@@ -55,7 +55,9 @@ int main() {
     }
 
     free(branchM);
-        
+
+    encodePath("/budynek/mieszkanie2/pokoj2");
+
     killNodesList();
     killSelectedItems();
     killDict();
