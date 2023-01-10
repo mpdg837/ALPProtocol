@@ -7,7 +7,7 @@
 int main() {
     createListNodes();
     
-    addWord("broker",0);
+    addWord("broker",511);
     addWord("budynek",512);
     addWord("mieszkanie1",513);
     addWord("mieszkanie2",514);
@@ -22,11 +22,11 @@ int main() {
     addNodePath("/budynek/mieszkanie1/pokoj1=513");
     addNodePath("/budynek/mieszkanie1/pokoj1/szafa=514");
     addNodePath("/budynek/mieszkanie1/pokoj2=515");
-    addNodePath("/budynek/mieszkanie2=511");
-    addNodePath("/budynek/mieszkanie2/pokoj1=512");
-    addNodePath("/budynek/mieszkanie2/pokoj1=513");
-    addNodePath("/budynek/mieszkanie2/pokoj2=514");
-    addNodePath("/budynek/mieszkanie2/pokoj2/szafa=515");
+    addNodePath("/budynek/mieszkanie2=516");
+    addNodePath("/budynek/mieszkanie2/pokoj1=517");
+    addNodePath("/budynek/mieszkanie2/pokoj1=518");
+    addNodePath("/budynek/mieszkanie2/pokoj2=519");
+    addNodePath("/budynek/mieszkanie2/pokoj2/szafa=520");
 
     printf("================================================ \n");
     printf(" Registered Nodes: \n");
@@ -39,7 +39,7 @@ int main() {
     printBranch(mainTree,0);
     
     printf("================================================ \n");
-    char* path = "/budynek";
+    char* path = "/budynek/mieszkanie1/pokoj1";
     printf("SELECT ALL FROM %s/*  :\n",path);
 
     char* encPath = encodePath(path);

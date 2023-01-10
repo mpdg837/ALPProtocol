@@ -147,7 +147,7 @@ static void addAllNodesDirectlyLocated(tree* analysedBranch,char* path){
     free(relPath);
 }
 
-static void selectAllNodesR(tree* branch,char* path){
+static void selectAllNodesR(tree* branch,char* path,char addBranchToP){
   
     char* relPath = malloc(sizeof(char) * DIRECOTRY_BUFFER_SIZE);
     copyPath(relPath,path);    
@@ -158,10 +158,10 @@ static void selectAllNodesR(tree* branch,char* path){
     while (analysedBranch != NULL)
     {
         copyPath(relPath,path);
-        addBranchToPath(relPath,analysedBranch -> id);
+        if(addBranchToP) addBranchToPath(relPath,analysedBranch -> id);
 
         addAllNodesDirectlyLocated(analysedBranch,relPath);
-        if(analysedBranch -> subbranch != NULL) selectAllNodesR(analysedBranch -> subbranch,relPath);
+        if(analysedBranch -> subbranch != NULL) selectAllNodesR(analysedBranch -> subbranch,relPath,TRUE);
         analysedBranch = analysedBranch -> next_branch;
     }
 
@@ -176,22 +176,6 @@ void selectAllNodes(tree* branch,char* absPath){
 
     copyPath(relPath,absPath);
 
-    int n=0;
-    if(relPath[1] & 0x1 == 0){
-        for(n=0;n<DIRECOTRY_BUFFER_SIZE;n+=2){
-            printf("H \n");
-            if(relPath[n+1] & 0x1 == 1) {
-                relPath[n+1] = 0;
-                relPath[n] = 0;
-                relPath[n-1] = relPath[n-1] | 0x1;
-                break;
-            }
-        }
-    }else{
-        relPath[0] = 0;
-        relPath[1] = 0x1;
-    }
-
-    selectAllNodesR(branch,relPath);
+    selectAllNodesR(branch,relPath,FALSE);
     free(relPath);
 }
