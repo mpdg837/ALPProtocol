@@ -90,17 +90,18 @@ lnode* copySelectedItems(void){
 void killCopiedList(lnode* list){
     lnode* analysedItem = list;
 
-    while (1)
-    {
-        lnode* savedItem = analysedItem;
+    if(list != NULL)
+        while (1)
+        {
+            lnode* savedItem = analysedItem;
 
-        free(savedItem ->path);
+            free(savedItem ->path);
 
-        if(analysedItem -> next_item == NULL) break;
-        analysedItem = analysedItem -> next_item;
+            if(analysedItem -> next_item == NULL) break;
+            analysedItem = analysedItem -> next_item;
 
-        free(savedItem);
-    }
+            free(savedItem);
+        }
     
 }
 

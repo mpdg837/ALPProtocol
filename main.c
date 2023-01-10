@@ -3,19 +3,19 @@
 #include <string.h>
 #include "./tree.c"
 
-
 int main() {
     createListNodes();
     
-    addWord("broker",511);
+    addWord("kategorie",0);
     addWord("budynek",512);
     addWord("mieszkanie1",513);
     addWord("mieszkanie2",514);
     addWord("pokoj1",515);
     addWord("pokoj2",516);
     addWord("szafa",517);
+    addWord("blok",518);
 
-    mainTree = emptyBranch(encode("broker"));
+    mainTree = emptyBranch(32767);
 
     addNodePath("/budynek=511");
     addNodePath("/budynek=512");
@@ -27,6 +27,7 @@ int main() {
     addNodePath("/budynek/mieszkanie2/pokoj1=518");
     addNodePath("/budynek/mieszkanie2/pokoj2=519");
     addNodePath("/budynek/mieszkanie2/pokoj2/szafa=520");
+    addNodePath("/blok=533");
 
     printf("================================================ \n");
     printf(" Registered Nodes: \n");
@@ -39,16 +40,18 @@ int main() {
     printBranch(mainTree,0);
     
     printf("================================================ \n");
-    char* path = "/budynek/mieszkanie1/pokoj1";
+    char* path = "/budynek/mieszkanie1";
     printf("SELECT ALL FROM %s/*  :\n",path);
 
     char* encPath = encodePath(path);
-    printShortPath(encPath);
-    printf("\n");
+  
+   
 
     tree* branchM = getBranch(encPath);
     
     if(branchM != NULL){
+        printShortPath(encPath);
+         printf("\n");
         printf("------------------------------------------------\n");
         selectAllNodes(branchM,encPath);
 

@@ -45,6 +45,7 @@ shortcut* findNodes(tree* analysedTree,short idTopic){
         if(analysedBranch -> nodes != NULL)
             if(analysedBranch -> id == idTopic){
                 return analysedBranch -> nodes;
+                
                 break;
             }
 
@@ -56,34 +57,43 @@ shortcut* findNodes(tree* analysedTree,short idTopic){
 
 tree* getBranch(char* shortConfig){
     
-    tree* analyseTree = mainTree -> subbranch;
-    shortcut* analyseNode = NULL;
+    if(shortConfig[0] == 0x0 && shortConfig[1] == 0x1){
+        return mainTree;
+    }else{
+        tree* analyseTree = mainTree -> subbranch;
+        shortcut* analyseNode = NULL;
 
-    char pathBuffer[DIRECOTRY_BUFFER_SIZE];
-    memset(pathBuffer,'\0',sizeof (char));
-    
-    short idTopic;
-    char finAnalyse = FALSE;
+        char pathBuffer[DIRECOTRY_BUFFER_SIZE];
+        memset(pathBuffer,'\0',sizeof (char));
+        
+        short idTopic;
+        char finAnalyse = FALSE;
 
         int n=0;
         for(n=0;n<DIRECOTRY_BUFFER_SIZE;n+=2){
-            
+                
             idTopic = ((unsigned char)shortConfig[n] << 8) | (((unsigned char)shortConfig[n+1] & 0xFE) >> 1);
 
             analyseNode = findNodes(analyseTree,idTopic);
             analyseTree = findBranch(analyseTree,idTopic);
 
+            if(analyseTree == NULL) break;
+            
             if(shortConfig[n+1] & 0x1 == 0x1){
+                finAnalyse = TRUE;
                 break;
             }
         }
+        tree* selectedBranch = NULL;
 
-    tree* selectedBranch = emptyBranch(idTopic);
-    selectedBranch -> subbranch = analyseTree;
-    selectedBranch -> nodes = analyseNode;
+        if(finAnalyse){
+            selectedBranch = emptyBranch(idTopic);
+            selectedBranch -> subbranch = analyseTree;
+            selectedBranch -> nodes = analyseNode;
+        }
 
-    return selectedBranch;
-
+        return selectedBranch;
+    }
 }
 
 
