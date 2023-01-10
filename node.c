@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define DIRECOTRY_BUFFER_SIZE 128
+
 #define TRUE 1
 #define FALSE 0
 
@@ -20,6 +22,7 @@ typedef struct node
 typedef struct lnode
 {
     node* myNode;
+    char* path;
     struct lnode* next_item;
 }lnode;
 
@@ -44,6 +47,12 @@ static lnode* newNodeItem(node* myNode){
 
     itemNode -> myNode = myNode;
     itemNode -> next_item = NULL;
+
+    char* npath = malloc(sizeof(char)*DIRECOTRY_BUFFER_SIZE);
+    npath [0] = 0;
+    npath [1] = 0x1;
+
+    itemNode -> path = npath;
 
     return itemNode;
 }

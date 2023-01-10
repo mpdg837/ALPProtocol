@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "./shortcuts.c"
-#include "./dictionary.c"
 
 typedef struct tree{
     short id;
@@ -121,38 +120,78 @@ static void printBranch(tree* branch,int level){
 
 }
 
-static void addAllNodesDirectlyLocated(tree* analysedBranch){
+static void addAllNodesDirectlyLocated(tree* analysedBranch,char* path){
+    
+    char* relPath = malloc(sizeof(char) * DIRECOTRY_BUFFER_SIZE);
+    copyPath(relPath,path);
+
     if(analysedBranch !=NULL){
         shortcut* analysedNode = analysedBranch -> nodes;    
         
         while (analysedNode != NULL)
         {
             if(analysedNode -> node != NULL){
-                addSelectedItem(analysedNode -> node );
-               
+
+                copyPath(relPath,path);
+                
+                char* newPath = malloc(sizeof(char) * DIRECOTRY_BUFFER_SIZE);
+                copyPath(newPath,relPath);
+
+                addSelectedItem(analysedNode -> node,newPath);
+
             }
             analysedNode = analysedNode -> next_short;
         }
     }
+
+    free(relPath);
 }
 
-static void selectAllNodesR(tree* branch){
+static void selectAllNodesR(tree* branch,char* path){
   
+    char* relPath = malloc(sizeof(char) * DIRECOTRY_BUFFER_SIZE);
+    copyPath(relPath,path);    
 
     tree* analysedBranch = branch;
 
     
     while (analysedBranch != NULL)
     {
-        addAllNodesDirectlyLocated(analysedBranch);
-        if(analysedBranch -> subbranch != NULL) selectAllNodesR(analysedBranch -> subbranch);
+        copyPath(relPath,path);
+        addBranchToPath(relPath,analysedBranch -> id);
+
+        addAllNodesDirectlyLocated(analysedBranch,relPath);
+        if(analysedBranch -> subbranch != NULL) selectAllNodesR(analysedBranch -> subbranch,relPath);
         analysedBranch = analysedBranch -> next_branch;
     }
+
+    free(relPath);
        
         
 }
 
-void selectAllNodes(tree* branch){
+void selectAllNodes(tree* branch,char* absPath){
     initNewSelectionItems();
-    selectAllNodesR(branch);
+    char* relPath = malloc(sizeof(char) * DIRECOTRY_BUFFER_SIZE);
+
+    copyPath(relPath,absPath);
+
+    int n=0;
+    if(relPath[1] & 0x1 == 0){
+        for(n=0;n<DIRECOTRY_BUFFER_SIZE;n+=2){
+            printf("H \n");
+            if(relPath[n+1] & 0x1 == 1) {
+                relPath[n+1] = 0;
+                relPath[n] = 0;
+                relPath[n-1] = relPath[n-1] | 0x1;
+                break;
+            }
+        }
+    }else{
+        relPath[0] = 0;
+        relPath[1] = 0x1;
+    }
+
+    selectAllNodesR(branch,relPath);
+    free(relPath);
 }

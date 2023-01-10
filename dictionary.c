@@ -1,6 +1,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define TRUE 1
+#define FALSE 0
+
 #define DIRECOTRY_BUFFER_SIZE 128
 
 typedef struct word{
@@ -14,6 +17,8 @@ word* mainDictionary = NULL;
 
 static word* createWord(char* value, short number){
 
+    if(number == 0) number = 0x7FFF;
+    
     word* newWord = malloc(sizeof(word*));
     char* newValue = malloc(sizeof(char) * DIRECOTRY_BUFFER_SIZE);
 

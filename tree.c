@@ -1,7 +1,7 @@
 #include "./branch.c"
 #include "./extractNumber.c"
 
-#define DIRECOTRY_BUFFER_SIZE 128
+
 
 #define isNumber(character) character >= '0' && character <= '9'
 
@@ -68,7 +68,7 @@ tree* getBranch(char* shortConfig){
         int n=0;
         for(n=0;n<DIRECOTRY_BUFFER_SIZE;n+=2){
             
-            idTopic = (shortConfig[n] << 8) | ((shortConfig[n+1] & 0xFE) >> 1);
+            idTopic = ((unsigned char)shortConfig[n] << 8) | (((unsigned char)shortConfig[n+1] & 0xFE) >> 1);
 
             analyseNode = findNodes(analyseTree,idTopic);
             analyseTree = findBranch(analyseTree,idTopic);
