@@ -35,7 +35,8 @@ static node* newNode(int number){
     newNode -> humitidy = FALSE;
     newNode -> lightness = FALSE;
     newNode -> temperature = FALSE;
-    
+    newNode -> pressure = TRUE;
+
     newNode -> connected = FALSE;
 
     return newNode;
@@ -111,9 +112,26 @@ void showLNodeList(){
 
     while (analysedSensorNode != NULL)
     {
-        if(analysedSensorNode -> myNode != NULL)
+        if(analysedSensorNode -> myNode != NULL){
             printf("SENSOR NODE: %d \n",analysedSensorNode ->myNode->numberNode);
+
+            if(analysedSensorNode -> myNode ->temperature){
+                printf(" + temperature \n");
+            }
         
+            if(analysedSensorNode -> myNode ->pressure){
+                printf("  + pressure \n");
+            }
+        
+            if(analysedSensorNode -> myNode ->humitidy){
+                printf("  + humitidy \n");
+            }
+        
+            if(analysedSensorNode -> myNode ->lightness){
+                printf("  + lightness \n");
+            }
+        
+        }
         analysedSensorNode = analysedSensorNode -> next_item;
     }
     

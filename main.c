@@ -75,7 +75,7 @@ int main() {
     char* path = "/budynek/mieszkanie1/pokoj1/szafa";
     lnode* set1 = selectAll(path);
     
-    path = "/budynek/mieszkanie2/pokoj2/szafa";
+    path = "/budynek/mieszkanie2";
     lnode* set2 = selectAll(path);
 
     printf("================================================ \n");
@@ -83,8 +83,11 @@ int main() {
     printf("------------------------------------------------ \n");
 
     lnode* orset = orItem(set1,set2);
+    lnode* final = sensorFilter(orset,FALSE,TRUE,FALSE,FALSE);
 
-    showSelectedItems(orset);
+    showSelectedItems(final);
+
+    killCopiedList(final);
 
     killNodesList();
     killSelectedItems();
