@@ -31,12 +31,14 @@ static void addOperElement(node* element,char* path){
         lnode* analysedItem = results;
 
         while(1){
-            
+        
             if(analysedItem -> next_item == NULL){
                 lnode* newItem = newNodeItem(element);
                 copyPath(newItem -> path,path);
-
+                newItem -> next_item = NULL;
+                
                 analysedItem -> next_item = newItem;
+                
                 break;
             }
             analysedItem = analysedItem -> next_item;
@@ -47,7 +49,8 @@ static void addOperElement(node* element,char* path){
 lnode* andItem(lnode* set1, lnode* set2){
 
     char detected = FALSE;
-
+    results = NULL;
+    
     if(set1 != NULL){
         lnode* analysedItem = set1;
         while (1)
@@ -96,45 +99,10 @@ void addAllItems(lnode* set){
     }
 }
 
-lnode* sensorFilter(lnode* set, char temperature, char pressure, char humitidy, char lightness){
-
-    lnode* analysedItem = set;
-    char detected = FALSE;
-
-    while(1){
-
-        if(analysedItem -> myNode != NULL){
-            char decision = FALSE;
-
-            if(temperature && analysedItem -> myNode ->temperature) decision = TRUE;
-            if(pressure && analysedItem -> myNode ->pressure) decision = TRUE;
-            if(humitidy && analysedItem -> myNode ->humitidy) decision = TRUE;
-            if(lightness && analysedItem -> myNode ->lightness) decision = TRUE;
-
-            if(decision){
-                addOperElement(analysedItem -> myNode,analysedItem -> path);
-                detected = TRUE;
-            } 
-        }
-
-        if(analysedItem -> next_item == NULL) break;
-        analysedItem = analysedItem -> next_item;
-    }
-
-    lnode* newRes = NULL;
-
-    if(set != NULL) killCopiedList(set);
-
-    if(detected){
-        newRes = copySelectedItems(results);
-        killCopiedList(results);
-    }
-
-    return newRes;
-}
 
 lnode* orItem(lnode* set1, lnode* set2){
-
+    results = NULL;
+ 
     collectAllDesision = FALSE;
 
     if(set1 != NULL) addAllItems(set1);

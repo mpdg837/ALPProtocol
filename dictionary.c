@@ -18,6 +18,7 @@ word* mainDictionary = NULL;
 static word* createWord(char* value, short number){
 
     if(number == 0) number = 0x7FFF;
+    if(number == 1) number = 0x7FFE;
     
     word* newWord = malloc(sizeof(word*));
     char* newValue = malloc(sizeof(char) * DIRECOTRY_BUFFER_SIZE);

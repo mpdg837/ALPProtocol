@@ -14,7 +14,9 @@ typedef struct node
     char pressure;
     char humitidy;
     char lightness;
-
+    char turnOn;
+    char turnOff;
+    
     char connected;
 }node;
 
@@ -34,9 +36,12 @@ static node* newNode(int number){
     
     newNode -> humitidy = FALSE;
     newNode -> lightness = FALSE;
-    newNode -> temperature = FALSE;
+    newNode -> temperature = TRUE;
     newNode -> pressure = TRUE;
-
+    
+    newNode -> turnOff = FALSE;
+    newNode -> turnOn = FALSE;
+    
     newNode -> connected = FALSE;
 
     return newNode;

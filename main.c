@@ -1,41 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "./tree.c"
+#include "./packets.c"
 
 
-lnode* selectAll(char* path){
-    printf("================================================ \n");
-    printf("SELECT ALL FROM %s/*  :\n",path);
-
-    char* encPath = encodePath(path);
-  
-    
-    lnode* selected = NULL;
-
-    tree* branchM = getBranch(encPath);
-    
-    if(branchM != NULL){
-        printShortPath(encPath);
-         printf("\n");
-        printf("------------------------------------------------\n");
-        selectAllNodes(branchM,encPath);
-
-        selected = copySelectedItems(selectedItems);
-        killSelectedItems();
-
-        showSelectedItems(selected);
-
-        printf("================================================ \n");
-
-        
-    }else{
-        printf("Brak \n");
-    }
-
-    free(branchM);
-    return selected;
-}
 int main() {
     createListNodes();
     
@@ -47,7 +15,8 @@ int main() {
     addWord("pokoj2",516);
     addWord("szafa",517);
     addWord("blok",518);
-
+    addWord("szafax",600);
+    
     mainTree = emptyBranch(32767);
 
     addNodePath("/budynek=511");
@@ -72,23 +41,53 @@ int main() {
     
     printBranch(mainTree,0);
 
+    // Message 1
     char* path = "/budynek/mieszkanie1/pokoj1/szafa";
-    lnode* set1 = selectAll(path);
+    char* spath = encodePath(path);
+    char* query = newQuery(spath);
     
     path = "/budynek/mieszkanie2";
-    lnode* set2 = selectAll(path);
+    spath = encodePath(path); 
+    query = addPathToQuery(query,spath,OR_OPERATION);
+    query = addWildcard(query,PRESSURE);
+     
+    char* message = makeSubscribeMessage(query);
+    
+    free(spath);
+    
+    receiveMessage(message,10);
+    
+    // Message2
+    char* path1 = "/budynek/mieszkanie1/pokoj2";
+    char* spath1 = encodePath(path1);
+    char* query1 = newQuery(spath1);
+    
+    path1 = "/budynek/mieszkanie1/pokoj1/szafa";
+    spath1 = encodePath(path1); 
+    query1 = addPathToQuery(query1,spath1,OR_OPERATION);
+    
+    query1 = addWildcard(query1,TEMPERATURE);
+     
+    char* message1 = makeSubscribeMessage(query1);
+    
+    free(spath1);
+    
+    receiveMessage(message1,10);  
 
-    printf("================================================ \n");
-    printf(" OR OPERATION: \n");
-    printf("------------------------------------------------ \n");
-
-    lnode* orset = orItem(set1,set2);
-    lnode* final = sensorFilter(orset,FALSE,TRUE,FALSE,FALSE);
-
-    showSelectedItems(final);
-
-    killCopiedList(final);
-
+    // Message3
+    char* path2 = "/budynek";
+    char* spath2 = encodePath(path2);
+    char* query2 = newQuery(spath2);
+    
+    query2 = addWildcard(query2,PRESSURE);
+     
+    char* message2 = makeUnSubscribeMessage(query2);
+    
+    free(spath2);
+    
+    receiveMessage(message2,10);  
+    
+        
     killNodesList();
     killSelectedItems();
     killDict();

@@ -108,8 +108,8 @@ void killCopiedList(lnode* list){
 
 void showSelectedItems(lnode* list){
     lnode* listElement = list;
-
-    printf("Selected items: \n");
+    
+    printf("------------------------------------------------- \n");
     
     while (listElement != NULL)
     {
@@ -119,7 +119,7 @@ void showSelectedItems(lnode* list){
 
         listElement = listElement -> next_item;
     }
-    
+    printf("------------------------------------------------- \n");
 }
 
 void printShortPath(char* path){

@@ -80,6 +80,7 @@ tree* getBranch(char* shortConfig){
                 break;
             }
         }
+        
         tree* selectedBranch = NULL;
 
         if(finAnalyse){

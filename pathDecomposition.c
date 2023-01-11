@@ -1,5 +1,8 @@
 #include <stdlib.h>
 
+#define TRUE 1
+#define FALSE 0
+
 #define DIRECOTRY_BUFFER_SIZE 128
 
 char* newShortPath(){
@@ -8,6 +11,25 @@ char* newShortPath(){
     npath [1] = 0x1;
 
     return npath;
+}
+
+
+char shortPathComparer(char* path1, char* path2){
+    int n=0;
+    
+
+    for(n=0;n<DIRECOTRY_BUFFER_SIZE;n+=2){
+    
+        if(n+1 < DIRECOTRY_BUFFER_SIZE){
+          if(path1[n] != path2[n] || path1[n+1] != path2[n+1]) return FALSE;
+          
+          if(path1[n+1] & 0x1) break;
+        }else{
+          return FALSE;
+        }
+    }
+    
+    return TRUE;
 }
 
 static void copyPath(char* to, char* from){
