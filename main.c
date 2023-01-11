@@ -21,7 +21,7 @@ lnode* selectAll(char* path){
         printf("------------------------------------------------\n");
         selectAllNodes(branchM,encPath);
 
-        selected = copySelectedItems();
+        selected = copySelectedItems(selectedItems);
         killSelectedItems();
 
         showSelectedItems(selected);
@@ -72,10 +72,10 @@ int main() {
     
     printBranch(mainTree,0);
 
-    char* path = "/budynek/mieszkanie1";
+    char* path = "/budynek/mieszkanie1/pokoj1/szafa";
     lnode* set1 = selectAll(path);
     
-    path = "/budynek/mieszkanie2/pokoj2";
+    path = "/budynek/mieszkanie2/pokoj2/szafa";
     lnode* set2 = selectAll(path);
 
     printf("================================================ \n");

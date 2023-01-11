@@ -1,5 +1,7 @@
 #include "./nodeSelector.c"
 
+lnode* results = NULL;
+
 char contains(lnode* set, short id){
 
     lnode* analysedItem = set;
@@ -18,16 +20,14 @@ char contains(lnode* set, short id){
     return FALSE;
 }
 
-static void addOperElement(lnode* set, node* element,char* path){
-
-    printf("%d \n",element ->numberNode);
+static void addOperElement(node* element,char* path){
     
-    if(set == NULL){  
-        set = newNodeItem(element);
-        set -> path = path;
+    if(results == NULL){  
+        results = newNodeItem(element);
+        copyPath(results -> path,path);
 
     }else{
-        lnode* analysedItem = set;
+        lnode* analysedItem = results;
 
         while(1){
             
@@ -44,7 +44,7 @@ static void addOperElement(lnode* set, node* element,char* path){
 }
 
 lnode* andItem(lnode* set1, lnode* set2){
-    lnode* results = NULL;
+
     
     if(set1 != NULL){
         lnode* analysedItem = set1;
@@ -52,7 +52,7 @@ lnode* andItem(lnode* set1, lnode* set2){
         {
             if(analysedItem ->myNode != NULL){
                 if(contains(set2,analysedItem -> myNode ->numberNode)){
-                    addOperElement(results,analysedItem -> myNode,analysedItem ->path);
+                    addOperElement(analysedItem -> myNode,analysedItem ->path);
                 }
             }
 
@@ -68,7 +68,7 @@ lnode* andItem(lnode* set1, lnode* set2){
     return results;
 }
 
-void addAllItems(lnode* results, lnode* set){
+void addAllItems(lnode* set){
     lnode* analysedItem = set;
     
     while(1){
@@ -76,7 +76,7 @@ void addAllItems(lnode* results, lnode* set){
         if(analysedItem -> myNode != NULL){
 
             if(!contains(results,analysedItem -> myNode ->numberNode)){
-                addOperElement(results,analysedItem -> myNode,analysedItem -> path);
+                addOperElement(analysedItem -> myNode,analysedItem -> path);
             }
         }
 
@@ -85,13 +85,14 @@ void addAllItems(lnode* results, lnode* set){
     }
 }
 lnode* orItem(lnode* set1, lnode* set2){
-    lnode* results = NULL;
 
-    if(set1 != NULL) addAllItems(results,set1);
-    if(set2 != NULL) addAllItems(results,set2);
 
+    if(set1 != NULL) addAllItems(set1);
+    if(set2 != NULL) addAllItems(set2);
+
+    lnode* newRes = copySelectedItems(results);
     killCopiedList(set1);
     killCopiedList(set2);
 
-    return results;
+    return newRes;
 }

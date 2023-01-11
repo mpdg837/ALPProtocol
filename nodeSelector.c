@@ -59,12 +59,12 @@ static void addSelectedItem(node* myNode,char* path){
     
 }
 
-lnode* copySelectedItems(void){
+lnode* copySelectedItems(lnode* selected){
     lnode* copySelected = NULL;
     lnode* lastElement = NULL;
 
-    if(selectedItems != NULL){
-        lnode* analysedItem = selectedItems;
+    if(selected != NULL){
+        lnode* analysedItem = selected;
 
         while(1){
             
