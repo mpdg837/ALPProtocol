@@ -105,19 +105,7 @@ void killCopiedList(lnode* list){
     
 }
 
-void printShortPath(char* path){
-    int n=0;
-        for(n=0;n<DIRECOTRY_BUFFER_SIZE;n+=2){
-            
-            short number = (((unsigned char) path[n]) << 8) | ((((unsigned char) path[n+1]) & 0xFE) >> 1);
-            char* value = getValue(number);
 
-            printf("%s",value);
-
-            if(path[n+1] & 0x1 == 1) break;
-            else printf("/");
-        }
-}
 void showSelectedItems(lnode* list){
     lnode* listElement = list;
 
@@ -134,36 +122,17 @@ void showSelectedItems(lnode* list){
     
 }
 
-void copyPath(char* to, char* from){
-    int k=0;
+void printShortPath(char* path){
+    int n=0;
+        for(n=0;n<DIRECOTRY_BUFFER_SIZE;n+=2){
+            
+            short number = (((unsigned char) path[n]) << 8) | ((((unsigned char) path[n+1]) & 0xFE) >> 1);
+            char* value = getValue(number);
 
-    memset(to,'\0',sizeof(char) * DIRECOTRY_BUFFER_SIZE);
+            printf("%s",value);
 
-    for(k=0;k<DIRECOTRY_BUFFER_SIZE;k+=2){
-        to[k] = from[k];
-        to[k+1] = from[k+1];
-
-        if(from[k+1] & 0x1 == 1) break;       
-    }
-}
-
-char* addBranchToPath(char* path, short id){
-    
-    int k = 0;
-
-    if(path[0] != 0x0 || path[1] != 0x1){
-
-        for(k=0;k<DIRECOTRY_BUFFER_SIZE;k+=2){
-            if(path[k+1] & 0x1 == 1) {
-                path[k+1] = path[k+1] & 0xFE;
-                break;
-            }       
+            if(path[n+1] & 0x1 == 1) break;
+            else printf("/");
         }
-
-        k += 2;
-    }
-    
-    path[k] = (id >> 8) & 0xFF;
-    path[k+1] = ((id & 0xFF) << 1) | 0x1;
-    
 }
+

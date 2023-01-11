@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "./nodeSelector.c"
+
+#include "./setOperations.c"
 
 typedef struct shortcut{
     node* node;

@@ -3,6 +3,39 @@
 #include <string.h>
 #include "./tree.c"
 
+
+lnode* selectAll(char* path){
+    printf("================================================ \n");
+    printf("SELECT ALL FROM %s/*  :\n",path);
+
+    char* encPath = encodePath(path);
+  
+    
+    lnode* selected = NULL;
+
+    tree* branchM = getBranch(encPath);
+    
+    if(branchM != NULL){
+        printShortPath(encPath);
+         printf("\n");
+        printf("------------------------------------------------\n");
+        selectAllNodes(branchM,encPath);
+
+        selected = copySelectedItems();
+        killSelectedItems();
+
+        showSelectedItems(selected);
+
+        printf("================================================ \n");
+
+        
+    }else{
+        printf("Brak \n");
+    }
+
+    free(branchM);
+    return selected;
+}
 int main() {
     createListNodes();
     
@@ -38,37 +71,20 @@ int main() {
     printf("------------------------------------------------ \n");
     
     printBranch(mainTree,0);
-    
-    printf("================================================ \n");
+
     char* path = "/budynek/mieszkanie1";
-    printf("SELECT ALL FROM %s/*  :\n",path);
-
-    char* encPath = encodePath(path);
-  
-   
-
-    tree* branchM = getBranch(encPath);
+    lnode* set1 = selectAll(path);
     
-    if(branchM != NULL){
-        printShortPath(encPath);
-         printf("\n");
-        printf("------------------------------------------------\n");
-        selectAllNodes(branchM,encPath);
+    path = "/budynek/mieszkanie2/pokoj2";
+    lnode* set2 = selectAll(path);
 
-        lnode* selected = copySelectedItems();
-        killSelectedItems();
+    printf("================================================ \n");
+    printf(" OR OPERATION: \n");
+    printf("------------------------------------------------ \n");
 
-        showSelectedItems(selected);
-        killCopiedList(selected);
+    lnode* orset = orItem(set1,set2);
 
-        printf("================================================ \n");
-
-        
-    }else{
-        printf("Brak \n");
-    }
-
-    free(branchM);
+    showSelectedItems(orset);
 
     killNodesList();
     killSelectedItems();

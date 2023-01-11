@@ -1,8 +1,6 @@
 #include "./branch.c"
 #include "./extractNumber.c"
 
-
-
 #define isNumber(character) character >= '0' && character <= '9'
 
 #define SEPARATOR (char)'/'
@@ -76,10 +74,8 @@ tree* getBranch(char* shortConfig){
 
             analyseNode = findNodes(analyseTree,idTopic);
             analyseTree = findBranch(analyseTree,idTopic);
-
-            if(analyseTree == NULL) break;
             
-            if(shortConfig[n+1] & 0x1 == 0x1){
+            if(shortConfig[n+1] & 0x1 == 0x1 || analyseTree == NULL){
                 finAnalyse = TRUE;
                 break;
             }

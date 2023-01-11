@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#define DIRECOTRY_BUFFER_SIZE 128
+#include "./pathDecomposition.c"
 
 #define TRUE 1
 #define FALSE 0
@@ -48,9 +47,7 @@ static lnode* newNodeItem(node* myNode){
     itemNode -> myNode = myNode;
     itemNode -> next_item = NULL;
 
-    char* npath = malloc(sizeof(char)*DIRECOTRY_BUFFER_SIZE);
-    npath [0] = 0;
-    npath [1] = 0x1;
+    char* npath = newShortPath();
 
     itemNode -> path = npath;
 
