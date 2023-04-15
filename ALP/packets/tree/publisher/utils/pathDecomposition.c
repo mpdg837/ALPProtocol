@@ -32,6 +32,20 @@ char shortPathComparer(char* path1, char* path2){
     return TRUE;
 }
 
+static int pathComparer(char* path1, char* path2){
+    
+    int n = 0;
+    
+    for(int n=0;n<DIRECOTRY_BUFFER_SIZE;n++){
+        
+        if(path1[n] != path2[n]) return FALSE;    
+        
+        if(path1[n] & 0x1) break;
+    }
+    
+    return TRUE;
+}
+
 static void copyPath(char* to, char* from){
     int k=0;
 
@@ -61,7 +75,7 @@ static char* addBranchToPath(char* path, short id){
         k += 2;
     }
     
-    path[k] = (id >> 8) & 0xFF;
+    path[k] = (id >> 7) & 0xFF;
     path[k+1] = ((id & 0xFF) << 1) | 0x1;
     
 }

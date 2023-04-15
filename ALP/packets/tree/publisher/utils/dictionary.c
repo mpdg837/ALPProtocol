@@ -5,6 +5,9 @@
 #define FALSE 0
 
 #define DIRECOTRY_BUFFER_SIZE 128
+#define WORD_BUFFER_SIZE 32
+
+#define DICT_SEPARATOR '='
 
 typedef struct word{
     short id;
@@ -51,6 +54,45 @@ int addWord(char* value, short number){
 
         return 0;
   
+}
+
+void addWordByFile(char* line){
+    short identity = 0;
+    char* value = malloc(sizeof(char)*WORD_BUFFER_SIZE);
+    memset(value,'\0',sizeof(char)*WORD_BUFFER_SIZE);
+    
+    if(line != NULL){
+        int n=0;
+        
+        char mode = FALSE;
+        
+        for(n=0;n<strlen(line);n++){
+            char znak = line[n];
+            
+            switch(znak){
+                case DICT_SEPARATOR:
+                    mode = TRUE;
+                    break;
+                default:
+                    if(!mode){
+                        if(n >= WORD_BUFFER_SIZE) return (void)0;
+                        value[n] = znak;
+                    }else{
+                    
+                        if(znak >= '0' && znak <= '9'){
+                            identity *=10;
+                            identity += znak - '0';
+                        }
+                        
+                    }
+                    break;
+            }    
+        }
+        if(mode) addWord(value, identity);
+    }
+    
+
+    free(value);
 }
 
 short encode(char* value){
@@ -129,7 +171,7 @@ char* encodePath(char* myConfig){
 
                         short id = encode(pathBuffer);
                         
-                        shortPath[nPath] = (id >> 8) & 0xFF;
+                        shortPath[nPath] = (id >> 7) & 0xFF;
                         shortPath[nPath + 1] = ((id & 0xFF) << 1);
 
                         nPath += 2;
@@ -147,7 +189,7 @@ char* encodePath(char* myConfig){
         pathBuffer[k] = '\0';
 
         short id = encode(pathBuffer);
-        shortPath[nPath] = (id >> 8) & 0xFF;
+        shortPath[nPath] = (id >> 7) & 0xFF;
         shortPath[nPath+1] = ((id & 0xFF) << 1) | 0x1;
         
     }

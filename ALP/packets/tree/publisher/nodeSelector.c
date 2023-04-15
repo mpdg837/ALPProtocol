@@ -1,9 +1,23 @@
 #include "./node.c"
-#include "./dictionary.c"
+#include "./utils/dictionary.c"
 
 static lnode* selectedItems = NULL;
 static char firstSelection = TRUE;
 
+
+void printShortPath(char* path){
+    int n=0;
+        for(n=0;n<DIRECOTRY_BUFFER_SIZE;n+=2){
+            
+            short number = (((unsigned char) path[n]) << 7) | ((((unsigned char) path[n+1]) & 0xFE) >> 1);
+            char* value = getValue(number);
+
+            printf("%s",value);
+
+            if(path[n+1] & 0x1 == 1) break;
+            else printf("/");
+        }
+}
 
 void killSelectedItems(void){
     lnode* analysedItem = selectedItems;
@@ -28,7 +42,7 @@ void initNewSelectionItems(void){
     firstSelection = TRUE;
 }
 
-static void addSelectedItem(node* myNode,char* path){
+static void addSelectedItem(node* myNode,char* path, int ip){
 
     lnode* analysedItem = selectedItems;
     char detected = FALSE;
@@ -36,6 +50,7 @@ static void addSelectedItem(node* myNode,char* path){
     if(analysedItem == NULL){
         selectedItems = newNodeItem(myNode);
         copyPath(selectedItems -> path,path);
+        selectedItems -> ipSubscriber = ip;
     }else{
 
         while(1){
@@ -53,6 +68,7 @@ static void addSelectedItem(node* myNode,char* path){
             lnode* newMyItem = newNodeItem(myNode);
             copyPath(newMyItem -> path,path);
             analysedItem -> next_item = newMyItem;
+            analysedItem -> ipSubscriber = ip;
         }
     }
 
@@ -70,7 +86,9 @@ lnode* copySelectedItems(lnode* selected){
             
             lnode* newItem = newNodeItem(analysedItem -> myNode);
             copyPath(newItem -> path,analysedItem -> path);
-
+            
+            newItem -> ipSubscriber = analysedItem -> ipSubscriber;
+            
             if(copySelected == NULL){
                 copySelected = newItem;
                 lastElement = copySelected;
@@ -95,7 +113,7 @@ void killCopiedList(lnode* list){
         {
             lnode* savedItem = analysedItem;
 
-            free(savedItem ->path);
+            if(savedItem -> path != NULL) free(savedItem ->path);
 
             if(analysedItem -> next_item == NULL) break;
             analysedItem = analysedItem -> next_item;
@@ -122,17 +140,4 @@ void showSelectedItems(lnode* list){
     printf("------------------------------------------------- \n");
 }
 
-void printShortPath(char* path){
-    int n=0;
-        for(n=0;n<DIRECOTRY_BUFFER_SIZE;n+=2){
-            
-            short number = (((unsigned char) path[n]) << 8) | ((((unsigned char) path[n+1]) & 0xFE) >> 1);
-            char* value = getValue(number);
-
-            printf("%s",value);
-
-            if(path[n+1] & 0x1 == 1) break;
-            else printf("/");
-        }
-}
 

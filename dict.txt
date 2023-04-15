@@ -1,0 +1,11 @@
+kategorie=0
+mieszkanie=512
+salon=513
+okno=514
+kuchenka=515
+lampa=516
+sypialnia=517
+osoby=518
+Antek=519
+Kajtek=520
+roleta=521

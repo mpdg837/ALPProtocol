@@ -1,0 +1,13 @@
+/mieszkanie/salon=501
+/mieszkanie/salon/okno=502
+/mieszkanie/salon/okno/roleta+503
+/mieszkanie/salon/kuchenka=504
+/mieszkanie/salon/lampa+505
+/mieszkanie/sypialnia=506
+/mieszkanie/sypialnia/lampa+507
+/osoby/Antek=502
+/osoby/Antek=504
+/osoby/Antek/roleta+503
+/osoby/Antek/lampa+505
+/osoby/Kajtek=506
+/osoby/Kajtek/lampa+507

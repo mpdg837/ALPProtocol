@@ -9,6 +9,7 @@
 #define CR 13
 #define LF 10
 
+char lastIsDriverNode = FALSE;
 
 int getNumber(char* myConfig){
 
@@ -26,6 +27,11 @@ int getNumber(char* myConfig){
                 finAnalyse = TRUE;
                 break;
             case '=':
+                lastIsDriverNode = FALSE;
+                 canRead = TRUE;
+                break;
+            case '+':
+                lastIsDriverNode = TRUE;
                 canRead = TRUE;
                 break;
             default:
